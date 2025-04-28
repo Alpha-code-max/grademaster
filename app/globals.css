@@ -13,11 +13,11 @@
 }
 
 .heading {
-  @apply text-[24px] font-bold;
+  @apply text-[36px] font-bold;
 }
 
 .subheading {
-  @apply text-[20px] font-semibold;
+  @apply text-[25px] font-semibold;
 }
 
 .body {

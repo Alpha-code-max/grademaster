@@ -5,7 +5,7 @@ export default function NavBar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-100 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-4 py-6">
-        <div className="font-bold text-[30px] text-primary">
+        <div className="font-bold heading text-primary">
           <Link href="/">GradeMaster<span className="text-accent">*</span></Link>
         </div>
 

@@ -1,14 +1,19 @@
 import mongoose from "mongoose";
+import  connect  from "@/mongoose.js";
 
-const courseSchema = new mongoose.Schema({
-    courseName: String,
-    credit: Number,
-    grade: String,
-    semester: String,
-    level: String,
-    gradePoint: Number,
-}, {timestamps: true})  
+const { coursesConnection } = await connect()// Assuming this is your DB connection utility
 
-const Course = mongoose.models.Course || mongoose.model("Course", courseSchema);
+const courseSchema = (coursesConnection) => {
+    const courseSchema = new mongoose.Schema({
+        courseName: String,
+        credit: Number,
+        grade: String,
+        semester: String,
+        level: String,
+        gradePoint: Number,
+    }, {timestamps: true})  
+                                 
+}
 
-export default Course;
+
+export default createCourseModel;
