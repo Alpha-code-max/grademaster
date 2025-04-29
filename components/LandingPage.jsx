@@ -45,9 +45,9 @@ export default function LandingPage() {
         </section>
   
         {/* Footer */}
-        <footer className="text-center text-gray-500 mt-20 text-sm">
+        {/* <footer className="text-center text-gray-500 mt-20 text-sm">
           &copy; {new Date().getFullYear()} GradeMaster. All rights reserved.
-        </footer>
+        </footer> */}
       </div>
     );
   }

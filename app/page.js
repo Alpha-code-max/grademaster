@@ -10,6 +10,7 @@ import Table from "@/components/Table";
 import { useState } from "react";
 import LandingPage from "@/components/LandingPage";
 import Register from "@/auth-components/Register";
+import ContactPage from "@/components/ContactComponent";
 export default function Page(){
 
 
@@ -28,6 +29,7 @@ export default function Page(){
           <p>{course.semester}</p>
         </div>
       ))} */}
+      <ContactPage />
     </div>
   )
 }

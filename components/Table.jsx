@@ -3,10 +3,10 @@
 import { MdDelete, MdEdit } from "react-icons/md";
 import useCourses from "@/store/useCourses";
 
-
 export default function Table() {
-    const RemoveCourses = useCourses((state) => state.removeCourse)
-    const courses = useCourses((state) => state.courses)
+    const removeCourse = useCourses((state) => state.removeCourse); // Fixed naming
+    const courses = useCourses((state) => state.courses);
+
     return (
         <div className="overflow-x-auto rounded-xl container mx-auto shadow-md">
             <div className="heading text-center text-2xl font-bold py-4">Courses Table</div>
@@ -26,7 +26,7 @@ export default function Table() {
                 <tbody className="divide-y divide-gray-100">
                     {courses.map((course, index) => (
                         <tr
-                            key={index}
+                            key={course.id} // Changed to use course.id instead of index
                             className="hover:bg-gray-50 transition-colors"
                         >
                             <td className="px-6 py-4 text-sm text-gray-900">{course.courseName}</td>
@@ -36,7 +36,10 @@ export default function Table() {
                             <td className="px-6 py-4 text-sm text-gray-700">{course.level}</td>
                             <td className="px-6 py-4 text-sm text-gray-700">{course.gradePoint}</td>
                             <td className="px-6 py-4 text-sm text-error">
-                                <button className="px-6 py-4 text-sm text-error cursor-pointer" onClick={() => RemoveCourses(course)}>
+                                <button 
+                                    className="px-6 py-4 text-sm text-error cursor-pointer" 
+                                    onClick={() => removeCourse(course.id)} // Changed to pass course.id
+                                >
                                     <MdDelete size={20}/>
                                 </button>
                             </td>
