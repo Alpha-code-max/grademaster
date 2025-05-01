@@ -15,12 +15,22 @@ export default function CourseInputRow() {
 
   const addCourse = useCourses((state) => state.addCourse);
 
+  const isFormComplete = () => {
+    return courseName.trim() !== '' && 
+           grade !== '' && 
+           credit > 0 && 
+           level !== '' && 
+           semester !== '';
+  };
+
   const handleAddClick = (e) => {
     e.preventDefault();
+    if (!isFormComplete()) return;
+    
     addCourse({ 
       courseName, 
       grade, 
-      credit: Number(credit), // Ensure credit is a number
+      credit: Number(credit),
       level, 
       semester 
     });
@@ -78,11 +88,19 @@ export default function CourseInputRow() {
           label="Select a Semester" 
           id="Semester" 
           value={semester}
-          options={["1", "2"]} 
+          options={["1st", "2nd"]} 
           placeholder="Select a Semester" 
           onChange={(e) => setSemester(e.target.value)}
         />
-        <button type="submit" className='bg-primary p-2 rounded-md cursor-pointer'>
+        <button 
+          type="submit" 
+          disabled={!isFormComplete()}
+          className={`p-2 rounded-md transition-all duration-300 ${
+            isFormComplete() 
+              ? 'bg-primary cursor-pointer' 
+              : 'bg-gray-400 cursor-not-allowed opacity-50'
+          }`}
+        >
           <MdAdd color="white" size={30}/>
         </button>
       </form>
