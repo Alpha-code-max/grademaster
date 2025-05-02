@@ -49,59 +49,71 @@ export default function CourseInputRow() {
   };
 
   return (
-    <div className="container mx-auto shadow-sm rounded-md p-4 mt-4">
-      <div className="text-body text-2xl font-bold">
+    <div className="container mx-auto shadow-sm rounded-md p-2 md:p-4 mt-2 md:mt-4">
+      <div className="text-body text-xl md:text-2xl font-bold mb-2 md:mb-4">
         Input course details
       </div>
-      <form className="text-text flex justify-between gap-[1px] items-center bg-background rounded-md py-2 px-4" onSubmit={handleAddClick}>
+      
+      <form className="flex flex-col md:flex-row gap-2 md:gap-4 items-start md:items-center bg-background rounded-md py-2 px-2 md:px-4" 
+        onSubmit={handleAddClick}
+      >
         <Input 
-          label="Course Name or Course Code" 
+          label="Course Name or Code" 
           id="course-name" 
           value={courseName}
           onChange={(e) => setCourseName(e.target.value)}
+          className="w-full md:w-1/4"
         />
-        <Select 
-          label="Select a Grade" 
-          id="Grade" 
-          value={grade}
-          options={["A", "B", "C", "D", "E", "F"]} 
-          placeholder="Select a Grade" 
-          onChange={(e) => setGrade(e.target.value)}
-        />
-        <Select 
-          label="Select a Credit" 
-          id="Credit" 
-          value={credit}
-          options={[1, 2, 3, 4, 5, 6]} 
-          placeholder="Select a Credit" 
-          onChange={handleCreditChange}  // Use new handler
-        />
-        <Select 
-          label="Select a Level" 
-          id="Level" 
-          value={level}
-          options={["100", "200", "300", "400", "500", "600"]} 
-          placeholder="Select a Year" 
-          onChange={(e) => setLevel(e.target.value)}
-        />
-        <Select 
-          label="Select a Semester" 
-          id="Semester" 
-          value={semester}
-          options={["1st", "2nd"]} 
-          placeholder="Select a Semester" 
-          onChange={(e) => setSemester(e.target.value)}
-        />
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full md:w-auto">
+          <Select 
+            label="Grade" 
+            id="Grade" 
+            value={grade}
+            options={["A", "B", "C", "D", "E", "F"]} 
+            placeholder="Grade" 
+            onChange={(e) => setGrade(e.target.value)}
+            className="w-full"
+          />
+          <Select 
+            label="Credit" 
+            id="Credit" 
+            value={credit}
+            options={[1, 2, 3, 4, 5, 6]} 
+            placeholder="Credit" 
+            onChange={handleCreditChange}
+            className="w-full"
+          />
+          <Select 
+            label="Level" 
+            id="Level" 
+            value={level}
+            options={["100", "200", "300", "400", "500", "600"]} 
+            placeholder="Level" 
+            onChange={(e) => setLevel(e.target.value)}
+            className="w-full"
+          />
+          <Select 
+            label="Semester" 
+            id="Semester" 
+            value={semester}
+            options={["1st", "2nd"]} 
+            placeholder="Semester" 
+            onChange={(e) => setSemester(e.target.value)}
+            className="w-full"
+          />
+        </div>
+
         <button 
           type="submit" 
           disabled={!isFormComplete()}
-          className={`p-2 rounded-md transition-all duration-300 ${
+          className={`w-full md:w-auto p-2 md:p-3 rounded-md transition-all duration-300 mt-2 md:mt-0 ${
             isFormComplete() 
-              ? 'bg-primary cursor-pointer' 
+              ? 'bg-primary cursor-pointer hover:bg-primary/80' 
               : 'bg-gray-400 cursor-not-allowed opacity-50'
           }`}
         >
-          <MdAdd color="white" size={30}/>
+          <MdAdd color="white" size={24} className="mx-auto"/>
         </button>
       </form>
     </div>
