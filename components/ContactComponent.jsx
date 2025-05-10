@@ -1,70 +1,106 @@
-import NavBar from "@/components/NavBar";
+'use client'
+
+import { useState } from 'react'
+import NavBar from "@/components/NavBar"
+import { MdSend, MdPerson, MdEmail, MdMessage } from "react-icons/md"
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  })
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // Add form submission logic here
+  }
+
   return (
-    <div className="bg-background min-h-screen">
-      <div className="bg-background mb-6 md:mb-10">
-        <NavBar />
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <NavBar />
       
-      <div className="px-4 md:px-6 lg:px-8 py-10 md:py-20 text-gray-800">
-        <div className="max-w-3xl mx-auto space-y-6 md:space-y-10">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary text-center">
-            Contact Us
-          </h1>
+      <div className="container mx-auto px-4 py-16 sm:py-24">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <div className="text-center space-y-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+                Get in Touch
+              </span>
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Have questions or feedback? We're here to help make your academic journey better.
+            </p>
+          </div>
 
-          <p className="body text-center text-sm md:text-base px-4">
-            Have questions, feedback, or need help with GradeMaster? We're here to assist you. 
-            Reach out using the form below and we'll get back to you as soon as possible.
-          </p>
+          <form 
+            onSubmit={handleSubmit}
+            className="bg-white p-6 md:p-8 rounded-2xl shadow-xl shadow-gray-100/50 border border-gray-100"
+          >
+            <div className="space-y-6">
+              <div className="relative">
+                <label className="flex items-center gap-2 text-gray-700 font-medium mb-2">
+                  <MdPerson className="text-primary" size={20} />
+                  Name
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  placeholder="Your full name"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                />
+              </div>
 
-          <form className="space-y-4 md:space-y-6 bg-gray-50 p-4 md:p-6 rounded-xl shadow-md">
-            <div>
-              <label className="block text-sm md:text-base font-medium text-gray-700">
-                Name
-              </label>
-              <input
-                type="text"
-                placeholder="Your full name"
-                className="mt-1 w-full px-3 md:px-4 py-2 text-sm md:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-              />
+              <div className="relative">
+                <label className="flex items-center gap-2 text-gray-700 font-medium mb-2">
+                  <MdEmail className="text-primary" size={20} />
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  placeholder="you@example.com"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                />
+              </div>
+
+              <div className="relative">
+                <label className="flex items-center gap-2 text-gray-700 font-medium mb-2">
+                  <MdMessage className="text-primary" size={20} />
+                  Message
+                </label>
+                <textarea
+                  rows="4"
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  placeholder="Write your message here..."
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98] transition-all duration-200"
+              >
+                <span className="flex items-center justify-center gap-2">
+                  Send Message
+                  <MdSend size={20} />
+                </span>
+              </button>
             </div>
-
-            <div>
-              <label className="block text-sm md:text-base font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                type="email"
-                placeholder="you@example.com"
-                className="mt-1 w-full px-3 md:px-4 py-2 text-sm md:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm md:text-base font-medium text-gray-700">
-                Message
-              </label>
-              <textarea
-                rows="4"
-                placeholder="Write your message here..."
-                className="mt-1 w-full px-3 md:px-4 py-2 text-sm md:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full md:w-auto bg-primary text-white font-semibold px-4 md:px-6 py-2 text-sm md:text-base rounded-md hover:bg-primary/80 transition duration-200"
-            >
-              Send Message
-            </button>
           </form>
 
-          <p className="text-center text-gray-500 text-xs md:text-sm mt-8 md:mt-16">
-            &copy; {new Date().getFullYear()} GradeMaster. Built with ❤️ to help every student succeed.
-          </p>
+          <footer className="text-center">
+            <p className="text-gray-500 text-sm">
+              © {new Date().getFullYear()} GradeMaster. Made with 
+              <span className="mx-1 text-red-500">❤️</span> 
+              for students
+            </p>
+          </footer>
         </div>
       </div>
     </div>
-  );
+  )
 }

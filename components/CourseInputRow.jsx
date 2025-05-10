@@ -11,7 +11,7 @@ export default function CourseInputRow() {
   const [grade, setGrade] = useState('')
   const [credit, setCredit] = useState(0)  // Initialize as number
   const [level, setLevel] = useState('')
-  const [semester, setSemester] = useState('')
+  const [semester, setSemester] = useState('') // Initialize as number
 
   const addCourse = useCourses((state) => state.addCourse);
 
@@ -49,12 +49,12 @@ export default function CourseInputRow() {
   };
 
   return (
-    <div className="container mx-auto shadow-sm rounded-md p-2 md:p-4 mt-2 md:mt-4">
-      <div className="text-body text-xl md:text-2xl font-bold mb-2 md:mb-4">
+    <div className="container mx-auto shadow-sm rounded-md p-2 md:p-4 mt-2 md:mt-4 w-screen">
+      <div className="text-body text-center text-xl md:text-2xl font-bold mb-2 md:mb-4">
         Input course details
       </div>
       
-      <form className="flex flex-col md:flex-row gap-2 md:gap-4 items-start md:items-center bg-background rounded-md py-2 px-2 md:px-4" 
+      <form className="flex flex-col md:flex-row gap-2 md:gap-4 items-start md:items-center rounded-md py-2 px-2 md:px-4 justify-between" 
         onSubmit={handleAddClick}
       >
         <Input 
@@ -62,7 +62,7 @@ export default function CourseInputRow() {
           id="course-name" 
           value={courseName}
           onChange={(e) => setCourseName(e.target.value)}
-          className="w-full md:w-1/4"
+          className="border-2 border-gray-300 rounded-md p-2 text-black"
         />
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full md:w-auto">
@@ -102,6 +102,16 @@ export default function CourseInputRow() {
             onChange={(e) => setSemester(e.target.value)}
             className="w-full"
           />
+{/* 
+          <Select 
+            label="Courses Per Semester"
+            id="CoursesPerSemester" 
+            value={courseperSemester}
+            options={[...Array(20).keys()].map(i => i + 1)} // Generate numbers 1 to 20
+            placeholder="Courses Per Semester" 
+            onChange={(e) => setSemester(e.target.value)}
+            className="w-full"
+          /> */}
         </div>
 
         <button 

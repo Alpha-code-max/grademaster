@@ -36,11 +36,11 @@ export async function GET() {
     }
 }
 
-export async function DELETE(request) {
-    const { coursesConnection } = await connect();
-    const Course = createCourseModel(coursesConnection);
+// export async function DELETE(request) {
+//     const { coursesConnection } = await connect();
+//     const Course = createCourseModel(coursesConnection);
     
-    const { id } = await request.json();
-    const course = await Course.findByIdAndDelete(id);
-    return NextResponse.json(course);
-}
+//     const { id } = await request.json();
+//     const course = await Course.findByIdAndDelete(id);
+//     return NextResponse.json(course);
+// }

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import NavBar from "@/components/NavBar";
+import { signIn } from 'next-auth/react';
+import { FiMail, FiLock, FiArrowRight } from 'react-icons/fi';
 
 export default function Login() {
   const router = useRouter();
@@ -18,106 +20,113 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-    
-      if (response.ok) {
-        const data = await response.json();
-        router.push('/'); // Redirect to home after successful login
-      } else {
-        const text = await response.text(); // <-- get text, not json
-    
-        let errorMessage = 'Login failed';
-        try {
-          const errorData = text ? JSON.parse(text) : null;
-          errorMessage = errorData?.message || 'Login failed';
-        } catch (parseError) {
-          console.error('Failed to parse error JSON:', parseError);
-          console.error('Raw server response:', text);
-        }
-    
-        setError(errorMessage);
+      const response = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      })
+        
+      if (response?.error) {
+        setError('Invalid email or password. Please try again.');
+        // setError('')
+        return
       }
+
+      router.replace('/'); // Redirect to the dashboard or home page after successful login
     } catch (error) {
-      setError('An error occurred. Please try again.');
-      console.error("Login error:", error);
-    } finally {
-      setLoading(false);
+      console.log(error)
     }
     
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <NavBar />
       
-      <div className="flex-1 flex items-center justify-center p-4">
-        <form 
-          onSubmit={handleSubmit}
-          className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg space-y-6"
-        >
-          <h2 className="text-2xl font-bold text-center text-primary">
-            Welcome Back
-          </h2>
-
-          {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
-          <div className="space-y-4">
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl 
-                focus:outline-none focus:ring-2 focus:ring-primary 
-                focus:border-transparent transition"
-            />
-
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl 
-                focus:outline-none focus:ring-2 focus:ring-primary 
-                focus:border-transparent transition"
-            />
+      <div className="flex items-center justify-center p-4 sm:p-8 pt-20">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+              Welcome Back
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Enter your credentials to continue your journey
+            </p>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full bg-primary text-white py-3 rounded-xl font-medium
-              hover:bg-primary/90 transition duration-200 ease-in-out
-              ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+          <form 
+            onSubmit={handleSubmit}
+            className="bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl shadow-gray-200/50 space-y-6"
           >
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
+            {error && (
+              <div className="bg-red-50 text-red-500 p-4 rounded-xl text-sm flex items-center">
+                <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" />
+                </svg>
+                {error}
+              </div>
+            )}
 
-          <p className="text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <Link 
-              href="/auth/RegisterPage" 
-              className="text-primary hover:text-primary/80 font-medium 
-                hover:underline transition"
+            <div className="space-y-4">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                  <FiMail />
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                  required
+                  className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl 
+                    focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
+                    transition-all duration-200 bg-white/50"
+                />
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                  <FiLock />
+                </div>
+                <input
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  required
+                  className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl 
+                    focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
+                    transition-all duration-200 bg-white/50"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full bg-gradient-to-r from-primary to-accent text-white py-3 rounded-xl font-medium
+                hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98] transition-all duration-200
+                ${loading ? 'opacity-70 cursor-not-allowed' : ''} group`}
             >
-              Sign Up
-            </Link>
-          </p>
-        </form>
+              <span className="flex items-center justify-center gap-2">
+                {loading ? 'Logging in...' : 'Login'}
+                <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+              </span>
+            </button>
+
+            <p className="text-center text-sm text-gray-600">
+              Don't have an account?{' '}
+              <Link 
+                href="/auth/Register" 
+                className="text-primary hover:text-accent font-medium transition-colors"
+              >
+                Sign Up
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

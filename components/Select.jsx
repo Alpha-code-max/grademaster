@@ -11,7 +11,7 @@ export default function Dropdown({ id, label, options = [], placeholder = "Selec
         <select
           id={id}
           {...props}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 text-text focus:ring-primary"
         >
           <option value={placeholder}>
             {placeholder}

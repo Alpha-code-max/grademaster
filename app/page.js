@@ -20,15 +20,7 @@ export default function Page(){
     <div className=" bg-background">
       <NavBar/>
       <LandingPage />
-      {/* {courses.map((course, index) => (
-        <div key={index}>
-          <p>{course.course}</p>
-          <p>{course.grade}</p>
-          <p>{course.credit}</p>
-          <p>{course.level}</p>
-          <p>{course.semester}</p>
-        </div>
-      ))} */}
+    
       <ContactPage />
     </div>
   )

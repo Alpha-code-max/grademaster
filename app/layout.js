@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { AuthProvider } from "@/store/Providers";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,7 +28,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
 
       <body className={` bg-background ${inter.variable} text-primary antialiased`}>
-        {children}
+        <AuthProvider>
+         {children}
+        </AuthProvider>        
       </body>
     </html>
   );

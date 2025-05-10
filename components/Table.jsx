@@ -52,7 +52,8 @@ export default function Table() {
                             <th className="px-4 md:px-6 py-3 text-left text-xs md:text-sm font-semibold text-gray-700">Semester</th>
                             <th className="px-4 md:px-6 py-3 text-left text-xs md:text-sm font-semibold text-gray-700">Year</th>
                             <th className="px-4 md:px-6 py-3 text-left text-xs md:text-sm font-semibold text-gray-700">Grade Point</th>
-                            <th className="px-4 md:px-6 py-3 text-left text-xs md:text-sm font-semibold text-gray-700">Actions</th>
+                            <th className="px-4 md:px-6 py-3 text-left text-xs md:text-sm font-semibold text-gray-700">Edit</th>
+                            <th className="px-4 md:px-6 py-3 text-left text-xs md:text-sm font-semibold text-gray-700">Delete</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -64,10 +65,12 @@ export default function Table() {
                                 <td className="px-4 md:px-6 py-4 text-xs md:text-sm text-gray-700">{course.semester}</td>
                                 <td className="px-4 md:px-6 py-4 text-xs md:text-sm text-gray-700">{course.level}</td>
                                 <td className="px-4 md:px-6 py-4 text-xs md:text-sm text-gray-700">{course.gradePoint}</td>
-                                <td className="px-4 md:px-6 py-4 text-xs md:text-sm flex gap-2">
+                                <td className="px-4 md:px-6 py-4 text-xs md:text-sm  gap-2">
                                     <button className="text-primary" onClick={() => {}}>
                                         <MdEdit size={18}/>
                                     </button>
+                                </td>
+                                <td className="px-4 md:px-6 py-4 text-xs md:text-sm gap-2">
                                     <button className="text-error" onClick={() => removeCourse(course.id)}>
                                         <MdDelete size={18}/>
                                     </button>

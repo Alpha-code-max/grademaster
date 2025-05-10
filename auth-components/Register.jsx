@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { FiUser, FiMail, FiLock, FiArrowRight } from 'react-icons/fi';
+import NavBar from '@/components/NavBar';
 
 export default function Register() {
   const router = useRouter();
@@ -41,69 +43,105 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md">
-        <form 
-          className="bg-white p-8 rounded-2xl shadow-lg space-y-6" 
-          onSubmit={handleSubmit}
-        >
-          <h2 className="text-2xl font-bold text-center text-primary mb-8">
-            Create an Account
-          </h2>
-
-          {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
-          <div className="space-y-4">
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              required
-              className="w-full px-4 py-3 border border-gray-300 text-text rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-            />
-
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              required
-              className="w-full px-4 py-3 border text-text border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-            />
-
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-              minLength={6}
-              className="w-full px-4 py-3 border text-text border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
-            />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+      <NavBar />
+      
+      <div className="flex items-center justify-center p-4 sm:p-8 pt-20">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+              Create Account
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Join us and start managing your academic journey
+            </p>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full bg-primary text-white py-3 rounded-xl font-medium
-              hover:bg-primary/90 transition duration-200 ease-in-out
-              ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+          <form 
+            className="bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl shadow-gray-200/50 space-y-6" 
+            onSubmit={handleSubmit}
           >
-            {loading ? 'Registering...' : 'Register'}
-          </button>
+            {error && (
+              <div className="bg-red-50 text-red-500 p-4 rounded-xl text-sm flex items-center">
+                <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" />
+                </svg>
+                {error}
+              </div>
+            )}
 
-          <p className="text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link 
-              href="/auth/LoginPage" 
-              className="text-primary hover:text-primary/80 font-medium hover:underline transition"
+            <div className="space-y-4">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                  <FiUser />
+                </div>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  required
+                  className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl 
+                    focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
+                    transition-all duration-200 bg-white/50"
+                />
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                  <FiMail />
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  required
+                  className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl 
+                    focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
+                    transition-all duration-200 bg-white/50"
+                />
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400">
+                  <FiLock />
+                </div>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  required
+                  minLength={6}
+                  className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl 
+                    focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
+                    transition-all duration-200 bg-white/50"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full bg-gradient-to-r from-primary to-accent text-white py-3 rounded-xl 
+                font-medium hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98] 
+                transition-all duration-200 ${loading ? 'opacity-70 cursor-not-allowed' : ''} group`}
             >
-              Login
-            </Link>
-          </p>
-        </form>
+              <span className="flex items-center justify-center gap-2">
+                {loading ? 'Creating Account...' : 'Create Account'}
+                <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+              </span>
+            </button>
+
+            <p className="text-center text-sm text-gray-600">
+              Already have an account?{' '}
+              <Link 
+                href="/auth/LoginPage" 
+                className="text-primary hover:text-accent font-medium transition-colors"
+              >
+                Login
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

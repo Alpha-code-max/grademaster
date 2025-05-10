@@ -2,26 +2,33 @@ import mongoose from "mongoose";
 import connect from "@/mongoose.js";
 
 const courseSchema = new mongoose.Schema({
-    courseName: {
-        type: String,
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
-    credit: {
-        type: Number,
-        required: true
-    },
-    grade: {
-        type: String,
-        required: true
-    },
-    semester: {
-        type: String,
-        required: true
-    },
-    level: {
-        type: String,
-        required: true
-    },
+    courses: [{
+        courseName: {
+            type: String,
+            required: true
+        },
+        credit: {
+            type: Number,
+            required: true
+        },
+        grade: {
+            type: String,
+            required: true
+        },
+        semester: {
+            type: String,
+            required: true
+        },
+        level: {
+            type: String,
+            required: true
+        }
+    }],
     gradePoint: {
         type: Number,
         required: true
