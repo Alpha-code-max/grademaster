@@ -15,10 +15,10 @@ function AuthCheck({ children }) {
         // Redirect to login page if not authenticated
         redirect('/auth/LoginPage')
     }
-    
-     if (session?.error) {
-        redirect('/auth/error')
-    }
+
+    // if (session?.error) {
+    //     redirect('/auth/error')
+    // }
 
     return children
 }
