@@ -19,7 +19,9 @@ export default function Page(){
   return (
     <div className=" bg-background">
       <NavBar/>
-      <LandingPage />
+      <div className="flex items-center justify-center p-4 sm:p-8 mt-10">
+        <LandingPage />
+      </div>
     
       <ContactPage />
     </div>

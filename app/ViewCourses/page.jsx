@@ -2,7 +2,23 @@
 
 import useCourses from "@/store/useCourses"
 import { MdSchool, MdGrade, MdBook, MdCalendarToday, MdScore } from "react-icons/md"
+import { IoArrowBack } from "react-icons/io5"
 import NavBar from "@/components/NavBar"
+import Link from "next/link"
+
+function calculateCGPA(courses) {
+    if (!courses || courses.length === 0) return 0;
+    
+    const totalPoints = courses.reduce((sum, course) => {
+        return sum + (parseFloat(course.gradePoint) * parseFloat(course.credit));
+    }, 0);
+    
+    const totalCredits = courses.reduce((sum, course) => {
+        return sum + parseFloat(course.credit);
+    }, 0);
+    
+    return (totalPoints / totalCredits).toFixed(2);
+}
 
 export default function ViewCourses() {
     const courses = useCourses((state) => state.courses)
@@ -11,7 +27,14 @@ export default function ViewCourses() {
         return (
             <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
                 <NavBar />
-                <div className="container mx-auto px-4 py-12">
+                <div className="container mx-auto px-4 py-12 pt-20">
+                    <Link 
+                        href="/CoursePage" 
+                        className="inline-flex items-center gap-2 mb-6 text-primary hover:text-primary/80 transition-colors"
+                    >
+                        <IoArrowBack size={20} />
+                        <span>Back to Courses</span>
+                    </Link>
                     <div className="flex flex-col items-center justify-center min-h-[400px] bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
                         <MdSchool size={64} className="text-gray-300 mb-4" />
                         <h2 className="text-xl font-semibold text-gray-900 mb-2">No Courses Yet</h2>
@@ -25,9 +48,26 @@ export default function ViewCourses() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
             <NavBar />
-            <div className="container mx-auto px-4 py-12">
+            <div className="container mx-auto px-4 py-12 pt-20">
+                <Link 
+                    href="/CoursePage" 
+                    className="inline-flex items-center gap-2 mb-6 text-primary hover:text-primary/80 transition-colors"
+                >
+                    <IoArrowBack size={20} />
+                    <span>Back to Courses</span>
+                </Link>
                 <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">Your Courses</h1>
                 
+                {/* Add CGPA Display */}
+                <div className="mb-8 p-6 bg-primary/5 rounded-2xl border border-primary/10">
+                    <div className="flex flex-col items-center justify-center">
+                        <h2 className="text-xl font-semibold text-gray-900 mb-2">Current CGPA</h2>
+                        <div className="text-4xl font-bold text-primary">
+                            {calculateCGPA(courses)}
+                        </div>
+                    </div>
+                </div>
+
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {courses.map((course, index) => (
                         <div 

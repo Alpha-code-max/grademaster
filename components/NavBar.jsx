@@ -58,7 +58,7 @@ export default function NavBar() {
         )}
 
         {/* Navigation links and buttons */}
-        <div className={`fixed top-0 right-0 h-full w-[280px] md:w-auto md:static bg-white md:bg-transparent p-6 md:p-0 z-40 transform transition-transform duration-300 ease-in-out ${
+        <div className={`fixed top-0 right-0 h-full w-[280px] md:w-auto md:static bg-white md:bg-transparent  p-6 md:p-0 z-40 transform transition-transform duration-300 ease-in-out ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0'
         } md:flex md:flex-row md:items-center md:gap-8`}>
           <ul className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-8 text-gray-600 font-medium mt-16 md:mt-0">

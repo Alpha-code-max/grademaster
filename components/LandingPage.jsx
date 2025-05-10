@@ -4,28 +4,31 @@ import { redirect } from "next/navigation"
 import { authOptions } from "../app/api/auth/[...nextauth]/route"
 import { FaCalculator, FaChartLine, FaCog } from 'react-icons/fa'
 
-export default async function LandingPage() {
-  const session = await getServerSession(authOptions)
-  if(!session) redirect("/auth/LoginPage")
+export default function LandingPage() {
+
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section */}
-        <section className="relative py-20 sm:py-32">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 rounded-3xl -z-10" />
+        {/* Hero Section  */}
+        <section 
+          className="relative py-20 sm:py-32 bg-cover bg-center" 
+          style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}>
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-accent/10 opacity-80 rounded-3xl -z-10" />
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
                 GradeMaster
               </span>
-              <p className="mt-4 text-3xl md:text-5xl text-gray-900">
-                Your Ultimate Grade 
+              <div className="mt-4 text-3xl md:text-5xl text-gray-900">
+                <p>
+                  Your Ultimate Grade 
+                </p>
                 <span className="relative inline-block px-4">
                   Calculator
                   <div className="absolute inset-x-0 bottom-0 h-3 bg-accent/20 -z-10 transform skew-x-12" />
                 </span>
-              </p>
+              </div>
             </h1>
             
             <p className="mt-8 text-lg sm:text-xl text-gray-600 leading-relaxed">

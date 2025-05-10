@@ -43,7 +43,7 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <NavBar />
       
-      <div className="flex items-center justify-center p-4 sm:p-8 pt-20">
+      <div className="flex items-center justify-center p-4 sm:p-8 mt-20">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
