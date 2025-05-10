@@ -21,9 +21,9 @@ function AuthCheck({ children }) {
 export const AuthProvider = ({children}) => {
     return (
         <SessionProvider>
-            <AuthCheck>
+
                 {children}
-            </AuthCheck>
+
         </SessionProvider>
     )
 }
