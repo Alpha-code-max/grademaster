@@ -10,47 +10,45 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section  */}
-        <section 
-          className="relative py-20 sm:py-32 bg-cover bg-center" 
-          style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}>
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-accent/10 opacity-80 rounded-3xl -z-10" />
-          <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-                GradeMaster
-              </span>
-              <div className="mt-4 text-3xl md:text-5xl text-gray-900">
-                <p>
-                  Your Ultimate Grade 
-                </p>
-                <span className="relative inline-block px-4">
-                  Calculator
-                  <div className="absolute inset-x-0 bottom-0 h-3 bg-accent/20 -z-10 transform skew-x-12" />
+        {/* Hero Section */}
+          <section 
+            className="relative py-20 sm:py-32 bg-cover bg-center" >
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-accent/10 opacity-80 rounded-3xl -z-10" />
+            <div className="text-center max-w-3xl mx-auto">
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+            GradeMaster
                 </span>
-              </div>
-            </h1>
-            
-            <p className="mt-8 text-lg sm:text-xl text-gray-600 leading-relaxed">
-              Say goodbye to manual calculations. GradeMaster makes it effortless to track grades, 
-              calculate grade points, and stay on top of academic performance.
+                <div className="mt-4 text-3xl md:text-5xl text-gray-900">
+            <p>
+              Your Ultimate Grade 
             </p>
-            
-            <div className="mt-10">
-              <Link 
-                href="/CoursePage"
-                className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-semibold shadow-lg shadow-primary/25 transition-all duration-300 hover:scale-105"
-              >
-                Get Started
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Link>
+            <span className="relative inline-block px-4">
+              Calculator
+              <div className="absolute inset-x-0 bottom-0 h-3 bg-accent/20 -z-10 transform skew-x-12" />
+            </span>
+                </div>
+              </h1>
+              
+              <p className="mt-8 text-lg sm:text-xl text-gray-600 leading-relaxed">
+                Say goodbye to manual calculations. GradeMaster makes it effortless to track grades, 
+                calculate grade points, and stay on top of academic performance.
+              </p>
+              
+              <div className="mt-10">
+                <Link 
+            href="/CoursePage"
+            className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-semibold shadow-lg shadow-primary/25 transition-all duration-300 hover:scale-105"                >
+            Get Started
+            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+                </Link>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* Features Section */}
+          {/* Features Section */}
         <section className="py-16 sm:py-24">
           <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-16">
             What You Can Do with GradeMaster
