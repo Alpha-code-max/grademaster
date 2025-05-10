@@ -27,9 +27,7 @@ export default function NavBar() {
   }, [isMenuOpen]);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white/80 backdrop-blur-md shadow-lg' : 'bg-transparent'
-    }`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out bg-white/80`}>
       <div className="container mx-auto flex justify-between items-center px-4 lg:px-8 py-4">
         {/* Logo */}
         <div className="relative z-50">
