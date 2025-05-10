@@ -11,7 +11,7 @@ const AuthErrorPage = () => {
             </p>
             <button 
                 className="px-6 py-3 text-base text-white bg-primary rounded-lg hover:bg-primary/80 transition-colors"
-                onClick={() => window.location.href = '/auth/login'}
+                onClick={() => window.location.href = '/auth/LoginPage'}
             >
                 Go to Login
             </button>

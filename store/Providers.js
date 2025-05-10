@@ -11,7 +11,12 @@ function AuthCheck({ children }) {
         return <div>Loading...</div>
     }
 
-    if (status === "unauthenticated" || session?.error) {
+    if (status === "unauthenticated") {
+        // Redirect to login page if not authenticated
+        redirect('/auth/LoginPage')
+    }
+    
+     if (session?.error) {
         redirect('/auth/error')
     }
 
