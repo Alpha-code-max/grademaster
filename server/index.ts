@@ -3,10 +3,10 @@ dotenv.config();
 
 import express, { Express, Request, Response } from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import courseRouter from './routes/courseRoutes';
 import userRouter from './routes/usersRoutes';
 import authRouter from './routes/authRoutes';
-
 
 const app: Express = express();
 
@@ -19,15 +19,34 @@ if (!mongoUri) {
   throw new Error('MONGO_URI must be set in environment variables');
 }
 
-// Middleware to parse JSON and URL-encoded bodies
+// CORS Configuration
+const corsOptions = {
+  origin: process.env.CLIENT_URL || 'http://localhost:3001',
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-// Logging middleware (MUST come after body parsers)
+// Middleware - Order matters!
+// 1. CORS middleware FIRST
+app.use(cors(corsOptions));
+
+// 2. Body parsers
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// 3. Logging middleware (after parsers, before routes)
 app.use((req: Request, res: Response, next: express.NextFunction) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-  console.log('Request body:', req.body);
-  console.log('Content-Type:', req.headers['content-type']);
+  console.log(`\n[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  console.log('Headers:', {
+    contentType: req.headers['content-type'],
+    authorization: req.headers['authorization'] ? 'Bearer [token]' : 'none',
+    origin: req.headers['origin'],
+  });
+  console.log('Body:', req.body);
+  console.log('Query:', req.query);
+  console.log('---');
   next();
 });
 
@@ -41,14 +60,23 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
-// Test endpoint
+// Test endpoint for debugging
 app.post('/test', (req: Request, res: Response) => {
-  console.log('Test endpoint - req.body:', req.body);
-  console.log('Test endpoint - req.headers:', req.headers);
-  res.json({ success: true, body: req.body });
+  console.log('=== TEST ENDPOINT ===');
+  console.log('Method:', req.method);
+  console.log('Body:', req.body);
+  console.log('Headers:', req.headers);
+  console.log('==================');
+  
+  res.json({
+    success: true,
+    received: req.body,
+    headers: req.headers,
+    message: 'Test endpoint received your request',
+  });
 });
 
-// API Routes (with optional DB connection check)
+// API Routes
 app.use('/api/courses', courseRouter);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
@@ -58,6 +86,23 @@ app.use((req: Request, res: Response) => {
   res.status(404).json({
     message: 'Route not found',
     path: req.path,
+    method: req.method,
+  });
+});
+
+// Global error handler
+app.use((err: any, req: Request, res: Response, next: express.NextFunction) => {
+  console.error('Global Error Handler:', {
+    message: err.message,
+    stack: err.stack,
+    path: req.path,
+    method: req.method,
+  });
+
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? err : {},
   });
 });
 
@@ -96,4 +141,5 @@ mongoose.connection.on('reconnected', () => {
 app.listen(port, () => {
   console.log(`🚀 Server is running on http://localhost:${port}`);
   console.log(`📚 Course API available at http://localhost:${port}/api/courses`);
+  console.log(`🧪 Test endpoint: POST http://localhost:${port}/test`);
 });

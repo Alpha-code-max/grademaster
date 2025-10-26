@@ -72,27 +72,27 @@ const courseSchema: Schema<ICourseDocument> = new Schema(
       },
     ],
     gradePoint: {
-      type: Number,
-      required: [true, 'Grade point is required'],
-      validate: {
-        validator: function (this: ICourseDocument, value: number): boolean {
-          if (this.gpaScale === '4.0') {
-            return value >= 0 && value <= 4.0;
-          } else if (this.gpaScale === '5.0') {
-            return value >= 0 && value <= 5.0;
-          }
-          return true;
-        },
-        message: function (this: ICourseDocument): string {
-          if (this.gpaScale === '4.0') {
-            return 'GPA must be between 0 and 4.0';
-          } else if (this.gpaScale === '5.0') {
-            return 'GPA must be between 0 and 5.0';
-          }
-          return 'Invalid GPA scale';
-        },
-      },
+  type: Number,
+  default: 0,
+  validate: {
+    validator: function (this: ICourseDocument, value: number): boolean {
+      if (this.gpaScale === '4.0') {
+        return value >= 0 && value <= 4.0;
+      } else if (this.gpaScale === '5.0') {
+        return value >= 0 && value <= 5.0;
+      }
+      return true;
     },
+    message: function (this: ICourseDocument): string {
+      if (this.gpaScale === '4.0') {
+        return 'GPA must be between 0 and 4.0';
+      } else if (this.gpaScale === '5.0') {
+        return 'GPA must be between 0 and 5.0';
+      }
+      return 'Invalid GPA scale';
+    },
+  },
+},
     gpaScale: {
       type: String,
       enum: {

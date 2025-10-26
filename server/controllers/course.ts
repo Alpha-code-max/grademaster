@@ -4,13 +4,19 @@ import Course, { ICourseDocument } from '../models/course';
 
 // Extend Request interface to include user
 interface AuthRequest extends Request {
-  user?: { id: string }; // Adjust based on your JWT payload
+  user?: {
+    userId: string;
+    email: string;
+    role: string;
+    iat: number;
+    exp: number;
+  };
 }
 
 // Create a new course
 export async function createCourse(req: AuthRequest, res: Response) {
   try {
-    const userId = req.user?.id;
+    const userId = req.user?.userId;
     if (!userId) {
       return res.status(401).json({
         message: 'Unauthorized: User ID not found in request',
@@ -57,7 +63,7 @@ export async function createCourse(req: AuthRequest, res: Response) {
 // Fetch all courses for the authenticated user
 export async function getAllCourses(req: AuthRequest, res: Response) {
   try {
-    const userId = req.user?.id;
+    const userId = req.user?.userId;
     if (!userId) {
       return res.status(401).json({
         message: 'Unauthorized: User ID not found in request',
@@ -86,7 +92,7 @@ export async function getAllCourses(req: AuthRequest, res: Response) {
 // Fetch a course by ID for the authenticated user
 export async function getCourseById(req: AuthRequest, res: Response) {
   try {
-    const userId = req.user?.id;
+    const userId = req.user?.userId;
     if (!userId) {
       return res.status(401).json({
         message: 'Unauthorized: User ID not found in request',
@@ -122,7 +128,7 @@ export async function getCourseById(req: AuthRequest, res: Response) {
 // Delete a course by ID for the authenticated user
 export async function deleteCourse(req: AuthRequest, res: Response) {
   try {
-    const userId = req.user?.id;
+    const userId = req.user?.userId;
     if (!userId) {
       return res.status(401).json({
         message: 'Unauthorized: User ID not found in request',
@@ -156,7 +162,7 @@ export async function deleteCourse(req: AuthRequest, res: Response) {
 // Update a course by ID for the authenticated user
 export async function updateCourse(req: AuthRequest, res: Response) {
   try {
-    const userId = req.user?.id;
+    const userId = req.user?.userId;
     if (!userId) {
       return res.status(401).json({
         message: 'Unauthorized: User ID not found in request',
