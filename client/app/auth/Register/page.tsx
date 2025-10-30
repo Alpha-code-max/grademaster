@@ -110,7 +110,7 @@ export default function RegisterPage() {
       setSuccess('Account created successfully! Redirecting...');
       setLoading(false);
       
-      setTimeout(() => router.replace('/'), 2000);
+      setTimeout(() => router.replace('/CoursePage'), 2000);
     } catch (err: any) {
       console.error('[REGISTER_ERROR]', err);
       const errorMessage = err?.message || err?.response?.data?.message || 'An unexpected error occurred. Please try again.';

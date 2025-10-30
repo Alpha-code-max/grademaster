@@ -80,9 +80,7 @@ const ContactPage = () => {
     e.preventDefault();
     setStatus({ type: null, message: '' });
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setLoading(true);
 
@@ -111,18 +109,9 @@ const ContactPage = () => {
         message: 'Message sent successfully! We\'ll get back to you soon.'
       });
 
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      });
+      setFormData({ name: '', email: '', subject: '', message: '' });
 
-      // Clear success message after 5 seconds
-      setTimeout(() => {
-        setStatus({ type: null, message: '' });
-      }, 5000);
+      setTimeout(() => setStatus({ type: null, message: '' }), 5000);
     } catch (error) {
       console.error('[CONTACT_ERROR]', error);
       setStatus({
@@ -135,199 +124,144 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-      <NavBar />
+    <div className="min-h-screen relative bg-white overflow-hidden">
+      {/* Diagonal motif */}
+      <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,rgba(240,240,240,1)_0px,rgba(240,240,240,1)_2px,rgba(255,255,255,1)_2px,rgba(255,255,255,1)_20-px)] z-0"></div>
 
-      <div className="container mx-auto px-4 py-16 sm:py-24">
-        <div className="max-w-3xl mx-auto space-y-12">
-          {/* Header Section */}
-          <div className="text-center space-y-4">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-300">
+      <div className="relative z-10">
+        <NavBar />
+
+        <div className="container mx-auto px-4 py-16 sm:py-24">
+          <div className="max-w-3xl mx-auto space-y-12">
+            {/* Header */}
+            <div className="text-center space-y-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800">
                 Get in Touch
-              </span>
-            </h1>
-            <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
-              Have questions, feedback, or need support? We're here to help make your experience better.
-              Send us a message and we'll respond as soon as possible.
-            </p>
-          </div>
-
-          {/* Contact Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-white/5 border border-white/10 rounded-xl p-6 text-center backdrop-blur-xl">
-              <div className="text-blue-400 text-4xl mb-3 flex justify-center">
-                📧
-              </div>
-              <h3 className="text-white font-semibold mb-1">Email</h3>
-              <p className="text-gray-400 text-sm">support@example.com</p>
-            </div>
-
-            <div className="bg-white/5 border border-white/10 rounded-xl p-6 text-center backdrop-blur-xl">
-              <div className="text-blue-400 text-4xl mb-3 flex justify-center">
-                📞
-              </div>
-              <h3 className="text-white font-semibold mb-1">Phone</h3>
-              <p className="text-gray-400 text-sm">+1 (555) 123-4567</p>
-            </div>
-
-            <div className="bg-white/5 border border-white/10 rounded-xl p-6 text-center backdrop-blur-xl">
-              <div className="text-blue-400 text-4xl mb-3 flex justify-center">
-                ⏰
-              </div>
-              <h3 className="text-white font-semibold mb-1">Hours</h3>
-              <p className="text-gray-400 text-sm">Mon - Fri, 9AM - 5PM</p>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white/10 backdrop-blur-xl p-8 md:p-10 rounded-2xl shadow-2xl shadow-blue-600/20 border border-white/20 space-y-6"
-          >
-            {/* Status Messages */}
-            {status.type && (
-              <div
-                className={`p-4 rounded-xl border flex items-center gap-3 transition-all duration-200 ${
-                  status.type === 'success'
-                    ? 'bg-green-500/10 border-green-500/30 text-green-400'
-                    : 'bg-red-500/10 border-red-500/30 text-red-400'
-                }`}
-              >
-                {status.type === 'success' ? (
-                  <MdCheckCircle className="w-5 h-5 flex-shrink-0" />
-                ) : (
-                  <MdError className="w-5 h-5 flex-shrink-0" />
-                )}
-                <span className="text-sm">{status.message}</span>
-              </div>
-            )}
-
-            {/* Name Field */}
-            <div>
-              <label htmlFor="name" className="flex items-center gap-2 text-white font-semibold mb-3">
-                <MdPerson className="text-blue-400" size={20} />
-                Full Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="John Doe"
-                disabled={loading}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10
-                  text-white placeholder-gray-500 focus:outline-none focus:ring-2
-                  focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200
-                  disabled:opacity-50 disabled:cursor-not-allowed"
-              />
-            </div>
-
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="flex items-center gap-2 text-white font-semibold mb-3">
-                <MdEmail className="text-blue-400" size={20} />
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="john@example.com"
-                disabled={loading}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10
-                  text-white placeholder-gray-500 focus:outline-none focus:ring-2
-                  focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200
-                  disabled:opacity-50 disabled:cursor-not-allowed"
-              />
-            </div>
-
-            {/* Subject Field */}
-            <div>
-              <label htmlFor="subject" className="flex items-center gap-2 text-white font-semibold mb-3">
-                <MdMessage className="text-blue-400" size={20} />
-                Subject
-              </label>
-              <input
-                id="subject"
-                type="text"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                placeholder="What is this about?"
-                disabled={loading}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10
-                  text-white placeholder-gray-500 focus:outline-none focus:ring-2
-                  focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200
-                  disabled:opacity-50 disabled:cursor-not-allowed"
-              />
-            </div>
-
-            {/* Message Field */}
-            <div>
-              <label htmlFor="message" className="flex items-center gap-2 text-white font-semibold mb-3">
-                <MdMessage className="text-blue-400" size={20} />
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Write your message here... (minimum 10 characters)"
-                rows={5}
-                disabled={loading}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10
-                  text-white placeholder-gray-500 focus:outline-none focus:ring-2
-                  focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200
-                  resize-none disabled:opacity-50 disabled:cursor-not-allowed"
-              />
-              <p className="text-xs text-gray-500 mt-2">
-                {formData.message.length}/500 characters
+              </h1>
+              <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto">
+                Have questions, feedback, or need support? We're here to help make your experience better.
               </p>
             </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800
-                text-white font-semibold px-8 py-4 rounded-xl active:scale-[0.98] transition-all duration-200
-                disabled:opacity-70 disabled:cursor-not-allowed group shadow-lg shadow-blue-600/20
-                hover:shadow-xl hover:shadow-blue-600/40"
+            {/* Contact Info */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              {[
+                { icon: '📧', title: 'Email', text: 'support@example.com' },
+                { icon: '📞', title: 'Phone', text: '+1 (555) 123-4567' },
+                { icon: '⏰', title: 'Hours', text: 'Mon - Fri, 9AM - 5PM' },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="bg-white border border-gray-200 rounded-xl p-6 text-center shadow-md hover:shadow-lg transition"
+                >
+                  <div className="text-blue-500 text-4xl mb-3">{item.icon}</div>
+                  <h3 className="font-semibold text-gray-800 mb-1">{item.title}</h3>
+                  <p className="text-gray-500 text-sm">{item.text}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Contact Form */}
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white border border-gray-200 rounded-2xl p-8 md:p-10 shadow-lg space-y-6"
             >
-              <span className="flex items-center justify-center gap-2">
-                {loading ? (
-                  <>
-                    <FiLoader className="w-5 h-5 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    Send Message
-                    <MdSend size={20} className="group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
-              </span>
-            </button>
+              {/* Status */}
+              {status.type && (
+                <div
+                  className={`p-4 rounded-xl border flex items-center gap-3 transition-all duration-200 ${
+                    status.type === 'success'
+                      ? 'bg-green-50 border-green-300 text-green-600'
+                      : 'bg-red-50 border-red-300 text-red-600'
+                  }`}
+                >
+                  {status.type === 'success' ? (
+                    <MdCheckCircle className="w-5 h-5" />
+                  ) : (
+                    <MdError className="w-5 h-5" />
+                  )}
+                  <span className="text-sm">{status.message}</span>
+                </div>
+              )}
 
-            {/* Additional Info */}
-            <p className="text-center text-xs text-gray-500">
-              We typically respond within 24-48 hours. Thank you for reaching out!
-            </p>
-          </form>
+              {/* Inputs */}
+              {[
+                { id: 'name', label: 'Full Name', icon: <MdPerson />, type: 'text', placeholder: 'John Doe' },
+                { id: 'email', label: 'Email Address', icon: <MdEmail />, type: 'email', placeholder: 'john@example.com' },
+                { id: 'subject', label: 'Subject', icon: <MdMessage />, type: 'text', placeholder: 'What is this about?' },
+              ].map((f, i) => (
+                <div key={i}>
+                  <label htmlFor={f.id} className="flex items-center gap-2 font-semibold text-gray-700 mb-2">
+                    <span className="text-blue-500">{f.icon}</span>
+                    {f.label}
+                  </label>
+                  <input
+                    id={f.id}
+                    type={f.type}
+                    name={f.id}
+                    value={(formData as any)[f.id]}
+                    onChange={handleChange}
+                    placeholder={f.placeholder}
+                    disabled={loading}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 disabled:opacity-50"
+                  />
+                </div>
+              ))}
 
-          {/* Footer */}
-          <footer className="text-center pt-12 border-t border-white/10">
-            <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} GradeMaster. Made with
-              <span className="mx-1 text-red-500">❤️</span>
-              for students
-            </p>
-          </footer>
+              {/* Message */}
+              <div>
+                <label htmlFor="message" className="flex items-center gap-2 font-semibold text-gray-700 mb-2">
+                  <MdMessage className="text-blue-500" />
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Write your message here... (minimum 10 characters)"
+                  rows={5}
+                  disabled={loading}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 resize-none disabled:opacity-50"
+                />
+                <p className="text-xs text-gray-400 mt-2">
+                  {formData.message.length}/500 characters
+                </p>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl active:scale-[0.98] transition-all duration-200 disabled:opacity-70"
+              >
+                <span className="flex items-center justify-center gap-2">
+                  {loading ? (
+                    <>
+                      <FiLoader className="w-5 h-5 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <MdSend size={20} />
+                    </>
+                  )}
+                </span>
+              </button>
+
+              <p className="text-center text-xs text-gray-500">
+                We typically respond within 24-48 hours. Thank you for reaching out!
+              </p>
+            </form>
+
+            <footer className="text-center pt-12 border-t border-gray-200">
+              <p className="text-gray-500 text-sm">
+                © {new Date().getFullYear()} GradeMaster. Made with
+                <span className="mx-1 text-red-500">❤️</span> for students
+              </p>
+            </footer>
+          </div>
         </div>
       </div>
     </div>

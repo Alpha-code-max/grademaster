@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useCourseStore } from '@/store/courseStore';
 import { Trash2, PlusCircle, Calculator, Download } from 'lucide-react';
+import { computeGPA, getClassification } from '@/libs/gpaUtils';
+import Table from './Table';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -60,21 +62,8 @@ export default function GPAInput() {
     setLevel('');
   };
 
-  // Compute CGPA for a group
-  const computeGroupCGPA = (courses: Course[], scale: '4' | '5') => {
-    const gradeMap = scale === '5' ? GRADE_SCALE_5 : GRADE_SCALE_4;
-    let totalGradePoints = 0;
-    let totalCredits = 0;
-
-    courses.forEach((course) => {
-      const gradePoint = gradeMap[course.grade] ?? 0;
-      totalGradePoints += gradePoint * course.credit;
-      totalCredits += course.credit;
-    });
-
-    return totalCredits > 0 ? Number((totalGradePoints / totalCredits).toFixed(2)) : 0;
-  };
-
+  
+  
   // Add a course
   const handleAddCourse = () => {
     if (!courseName || !credit || !grade || !gradeScale || !semester || !level) {
@@ -89,13 +78,13 @@ export default function GPAInput() {
     if (existingGroupIndex >= 0) {
       const group = updatedGroups[existingGroupIndex];
       group.courses.push(newCourse);
-      group.cgpa = computeGroupCGPA(group.courses, group.gradeScale);
+      group.cgpa = computeGPA(group.courses, group.gradeScale);
       updatedGroups[existingGroupIndex] = { ...group };
     } else {
       updatedGroups.push({
         gradeScale,
         courses: [newCourse],
-        cgpa: computeGroupCGPA([newCourse], gradeScale),
+        cgpa: computeGPA([newCourse], gradeScale),
       });
     }
 
@@ -111,7 +100,7 @@ export default function GPAInput() {
         return {
           ...group,
           courses: newCourses,
-          cgpa: computeGroupCGPA(newCourses, scale),
+          cgpa: computeGPA(newCourses, scale),
         };
       }
       return group;
@@ -120,44 +109,31 @@ export default function GPAInput() {
   };
 
   // Calculate total GPA
-  const calculateGPA = () => {
-    if (localCourses.length === 0) {
-      alert('Please add at least one course.');
-      return;
-    }
 
-    let totalGradePoints = 0;
-    let totalCredits = 0;
+const calculateGPA = () => {
+  if (localCourses.length === 0) {
+    alert("Please add at least one course.");
+    return;
+  }
 
-    localCourses.forEach((group) => {
-      const scale = group.gradeScale === '5' ? GRADE_SCALE_5 : GRADE_SCALE_4;
-      group.courses.forEach((course) => {
-        const gradePoint = scale[course.grade] ?? 0;
-        totalGradePoints += gradePoint * course.credit;
-        totalCredits += course.credit;
-      });
-    });
+  let totalGradePoints = 0;
+  let totalCredits = 0;
+  let scale = '5'; // Default or last used scale
 
-    const gpa = totalCredits > 0 ? totalGradePoints / totalCredits : 0;
-    setCalculatedGPA(Number(gpa.toFixed(2)));
-  };
+  localCourses.forEach((group) => {
+    const groupGPA = computeGPA(group.courses, group.gradeScale);
+    const groupCredits = group.courses.reduce((acc, c) => acc + c.credit, 0);
+    totalGradePoints += groupGPA * groupCredits;
+    totalCredits += groupCredits;
+    scale = group.gradeScale; // update scale if needed
+  });
 
-  const getClassification = (gpa: number, scale: string) => {
-    if (scale === '5') {
-      if (gpa >= 4.5) return 'Excellent! First Class';
-      if (gpa >= 3.5) return 'Great! Second Class Upper';
-      if (gpa >= 2.5) return 'Good! Second Class Lower';
-      if (gpa >= 1.5) return 'Pass';
-      return 'Needs Improvement';
-    } else {
-      if (gpa >= 3.5) return 'Excellent! First Class';
-      if (gpa >= 3.0) return 'Great! Second Class Upper';
-      if (gpa >= 2.0) return 'Good! Second Class Lower';
-      if (gpa >= 1.0) return 'Pass';
-      return 'Needs Improvement';
-    }
-  };
-
+  const overallGPA = totalCredits > 0 ? totalGradePoints / totalCredits : 0;
+  setCalculatedGPA(Number(overallGPA.toFixed(2)));
+  const classification = getClassification(overallGPA, scale);
+  console.log(`Classification: ${classification}`);
+};
+  
   // ------------------- PDF Download -------------------
   const handleDownloadPDF = async () => {
     const element = document.getElementById('gpa-summary');
@@ -258,37 +234,11 @@ export default function GPAInput() {
               {group.gradeScale}-Point Scale — CGPA:{' '}
               <span className="text-blue-600 font-bold">{group.cgpa}</span>
             </h2>
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-gray-200 text-gray-700">
-                  <th className="p-2 border">Course</th>
-                  <th className="p-2 border">Credit</th>
-                  <th className="p-2 border">Grade</th>
-                  <th className="p-2 border">Semester</th>
-                  <th className="p-2 border">Level</th>
-                  <th className="p-2 border">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {group.courses.map((course, index) => (
-                  <tr key={index} className="text-center hover:bg-gray-50 transition">
-                    <td className="border p-2">{course.courseName}</td>
-                    <td className="border p-2">{course.credit}</td>
-                    <td className="border p-2">{course.grade}</td>
-                    <td className="border p-2">{course.semester}</td>
-                    <td className="border p-2">{course.level}</td>
-                    <td className="border p-2">
-                      <button
-                        onClick={() => handleRemoveCourse(group.gradeScale, index)}
-                        className="text-red-600 hover:text-red-800 transition"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+             <Table
+      courses={group.courses}
+      gradeScale={group.gradeScale}
+      onRemove={handleRemoveCourse}
+    />
           </div>
         ))}
 

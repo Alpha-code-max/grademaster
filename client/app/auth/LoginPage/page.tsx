@@ -50,7 +50,7 @@ export default function LoginPage() {
 
       // ✅ Save userId from response to localStorage
       const userId =
-        res?.data?.user?._id || res?.data?.userId || res?.data?.id || null;
+        res?.data?.user?._id  || null;
 
       if (!userId) {
         throw new Error("Unable to retrieve user ID from server response.");
@@ -65,7 +65,7 @@ export default function LoginPage() {
       // Redirect to course page
       setTimeout(() => {
         router.replace('/CoursePage');
-      }, 1500);
+      }, 15000);
 
     } catch (err: any) {
       console.error('[LOGIN_ERROR]', err);
@@ -82,7 +82,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-white">
       <NavBar />
 
-      <div className="flex items-center justify-center p-4 sm:p-8 min-h-[calc(100vh-80px)]">
+      <div className="flex items-center justify-center p-4 sm:p-8 min-h-[calc(100vh-80px)] mt-11">
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">

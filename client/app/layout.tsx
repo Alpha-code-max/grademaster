@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, Fira_Code } from "next/font/google";
+import { Poppins, Fira_Code } from "next/font/google";
 import "./globals.css";
+import AuthInitializer from "@/components/AuthInitializer";
 
-const inter = Inter({
-  variable: "--font-inter",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -16,19 +18,22 @@ const firaCode = Fira_Code({
 
 export const metadata: Metadata = {
   title: "GPA Calculator",
-  description: "Easily compute your GPA with modern UI and interactive features.",
+  description:
+    "Easily compute your GPA with a modern UI, data persistence, and interactive features.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${firaCode.variable} font-sans bg-gray-50 text-gray-900 antialiased`}
+        className={`${poppins.variable} ${firaCode.variable} font-sans bg-gray-50 text-gray-900 antialiased`}
       >
+        {/* ✅ Client-side logic handled here */}
+        <AuthInitializer />
         {children}
       </body>
     </html>
