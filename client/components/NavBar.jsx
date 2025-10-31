@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -17,6 +17,12 @@ export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user, isAuthenticated, logout } = useAuthStore();
+  const [mounted, setMounted] = useState(false);
+
+  // Mark component as mounted after hydration
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Handle scroll shadow
   useEffect(() => {
@@ -64,27 +70,29 @@ export default function NavBar() {
 
         {/* Desktop Auth Section */}
         <div className="hidden md:flex items-center gap-4">
-          {isAuthenticated ? (
-            <>
-              <span className="bg-primary/10 text-primary font-semibold px-3 py-1 rounded-full text-sm md:text-base">
-                {user?.name || "User"} 👋
-              </span>
-              <Button
-                onClick={logout}
-                className="px-5 py-2 bg-red-500 text-white hover:bg-red-600 transition-colors duration-300 rounded-full"
-              >
-                Logout
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button className="px-5 py-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 rounded-full">
-                <Link href="/auth/LoginPage">Login</Link>
-              </Button>
-              <Button className="px-5 py-2 bg-primary text-white hover:bg-primary/90 transition-colors duration-300 rounded-full">
-                <Link href="/auth/Register">Sign Up</Link>
-              </Button>
-            </>
+          {mounted && ( // ✅ Only render after hydration
+            isAuthenticated ? (
+              <>
+                <span className="bg-primary/10 text-primary font-semibold px-3 py-1 rounded-full text-sm md:text-base">
+                  {user?.name || "User"} 👋
+                </span>
+                <Button
+                  onClick={logout}
+                  className="px-5 py-2 bg-red-500 text-white hover:bg-red-600 transition-colors duration-300 rounded-full"
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button className="px-5 py-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 rounded-full">
+                  <Link href="/auth/LoginPage">Login</Link>
+                </Button>
+                <Button className="px-5 py-2 bg-primary text-white hover:bg-primary/90 transition-colors duration-300 rounded-full">
+                  <Link href="/auth/Register">Sign Up</Link>
+                </Button>
+              </>
+            )
           )}
         </div>
 
@@ -107,10 +115,11 @@ export default function NavBar() {
 
       {/* Mobile Dropdown Menu */}
       <div
-        className={`fixed top-0 right-0 w-72 h-full bg-white shadow-lg border-l border-gray-200 z-50 transform transition-transform duration-300 ease-in-out ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 right-0 w-72 h-full shadow-lg border-l border-gray-200 z-50 transform transition-transform duration-300 ease-in-out ${
+          isMenuOpen ? "translate-x-0 bg-white" : "translate-x-full"
         } md:hidden flex flex-col p-6`}
       >
+        {/* Mobile Header */}
         <div className="flex justify-between items-center mb-8">
           <Link
             href="/"
@@ -126,75 +135,67 @@ export default function NavBar() {
           />
         </div>
 
-        {/* ✅ FIXED UL SYNTAX HERE */}
-        <ul
-  className={`flex flex-col gap-6 text-gray-700 font-medium transition-all duration-300 mb-8 ${
-    isMenuOpen ? "bg-white p-4 rounded-lg shadow-sm" : ""
-  }`}
->
-  {[
-    { name: "Home", icon: <HiHome />, href: "/" },
-    { name: "About", icon: <HiInformationCircle />, href: "/About" },
-    { name: "Contact", icon: <HiPhone />, href: "/Contact" },
-    { name: "Guide", icon: <HiBookOpen />, href: "/Guide" },
-    {name: "CoursePage", icon: <HiBookOpen />, href: "/CoursePage" },
-  ].map(({ name, icon, href }) => (
-    <li key={name}>
-      <Link
-        href={href}
-        onClick={() => setIsMenuOpen(false)}
-        className="hover:text-primary transition-colors flex items-center gap-2"
-      >
-        {icon}
-        {name}
-      </Link>
-    </li>
-  ))}
-</ul>
+        {/* Mobile Navigation */}
+        <ul className="flex flex-col bg-white p-10 gap-6 text-gray-700 font-medium mb-8">
+          {[
+            { name: "Home", href: "/" },
+            { name: "About", href: "/About" },
+            { name: "Contact", href: "/Contact" },
+            { name: "Guide", href: "/Guide" },
+            { name: "CoursePage", href: "/CoursePage" },
+          ].map(({ name, href }) => (
+            <li key={name}>
+              <Link
+                href={href}
+                onClick={() => setIsMenuOpen(false)}
+                className="hover:text-primary bg-white transition-colors flex items-center gap-2"
+              >
+                {name}
+              </Link>
+            </li>
+          ))}
+        </ul>
 
         {/* Mobile Auth Buttons */}
-        {/* Mobile Auth Buttons */}
-<div
-  className={`mt-auto flex flex-col gap-4 p-4 rounded-lg transition-all duration-300 ${
-    isMenuOpen ? "bg-white shadow-sm" : ""
-  }`}
->
-  {isAuthenticated ? (
-    <>
-      <span className="bg-primary/10 text-primary font-semibold px-3 py-2 rounded-full text-center">
-        {user?.name || "User"} 👋
-      </span>
-      <Button
-        onClick={() => {
-          logout();
-          setIsMenuOpen(false);
-        }}
-        className="w-full bg-red-500 text-white hover:bg-red-600 rounded-full"
-      >
-        Logout
-      </Button>
-    </>
-  ) : (
-    <>
-      <Button className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-full">
-        <Link
-          href="/auth/LoginPage"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Login
-        </Link>
-      </Button>
-      <Button className="w-full bg-primary text-white hover:bg-primary/90 rounded-full">
-        <Link
-          href="/auth/Register"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Sign Up
-        </Link>
-      </Button>
-    </>
-  )}
-</div>
+        {mounted && ( // ✅ Only render after hydration
+          <div className="mt-auto bg-white p-5 flex flex-col gap-4">
+            {isAuthenticated ? (
+              <>
+                <span className="bg-primary/10 text-primary font-semibold px-3 py-2 rounded-full text-center">
+                  {user?.name || "User"} 👋
+                </span>
+                <Button
+                  onClick={() => {
+                    logout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full bg-red-500 text-white hover:bg-red-600 rounded-full"
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-full">
+                  <Link
+                    href="/auth/LoginPage"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                </Button>
+                <Button className="w-full bg-primary text-white hover:bg-primary/90 rounded-full">
+                  <Link
+                    href="/auth/Register"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Sign Up
+                  </Link>
+                </Button>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );

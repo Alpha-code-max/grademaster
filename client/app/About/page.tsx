@@ -70,7 +70,7 @@ export default function AboutPage() {
               Who GradeMaster Is For
             </h2>
             <p className="text-gray-600">
-              GradeMaster is designed for students at all levels who want more control and visibility over their academic outcomes. Whether you're just beginning university or in your final year — GradeMaster meets you where you are.
+              GradeMaster is designed for students at all levels who want more control and visibility over their academic outcomes. Whether you&apos;re just beginning university or in your final year — GradeMaster meets you where you are.
             </p>
           </section>
 

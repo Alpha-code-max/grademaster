@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useCourseStore } from '@/store/courseStore';
+import { useCourseStore, ICourse } from '@/store/courseStore';
 import { Trash2, PlusCircle, Calculator, Download } from 'lucide-react';
 import { computeGPA, getClassification } from '@/libs/gpaUtils';
 import Table from './Table';
@@ -46,7 +46,7 @@ export default function GPAInput() {
   const { localCourses, setLocalCourses } = useCourseStore();
   const [courseName, setCourseName] = useState('');
   const [credit, setCredit] = useState<number>(0);
-  const [grade, setGrade] = useState('');
+  const [grade, setGrade] = useState<'A' | 'B' | 'C' | 'D' | 'E' | 'F'>();
   const [gradeScale, setGradeScale] = useState<'4' | '5' | ''>('');
   const [semester, setSemester] = useState('');
   const [level, setLevel] = useState('');
@@ -56,7 +56,7 @@ export default function GPAInput() {
   const clearInputs = () => {
     setCourseName('');
     setCredit(0);
-    setGrade('');
+    setGrade(undefined);
     setGradeScale('');
     setSemester('');
     setLevel('');
@@ -77,13 +77,13 @@ export default function GPAInput() {
 
     if (existingGroupIndex >= 0) {
       const group = updatedGroups[existingGroupIndex];
-      group.courses.push(newCourse);
+      group.courses.push(newCourse as ICourse);
       group.cgpa = computeGPA(group.courses, group.gradeScale);
       updatedGroups[existingGroupIndex] = { ...group };
     } else {
       updatedGroups.push({
         gradeScale,
-        courses: [newCourse],
+        courses: [newCourse as ICourse],
         cgpa: computeGPA([newCourse], gradeScale),
       });
     }
@@ -130,7 +130,7 @@ const calculateGPA = () => {
 
   const overallGPA = totalCredits > 0 ? totalGradePoints / totalCredits : 0;
   setCalculatedGPA(Number(overallGPA.toFixed(2)));
-  const classification = getClassification(overallGPA, scale);
+  const classification = getClassification(overallGPA, scale as "4" | "5");
   console.log(`Classification: ${classification}`);
 };
   
@@ -178,7 +178,7 @@ const calculateGPA = () => {
           />
           <select
             value={grade}
-            onChange={(e) => setGrade(e.target.value)}
+              onChange={(e) => setGrade(e.target.value as 'A' | 'B' | 'C' | 'D' | 'E' | 'F')}
             className="border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
           >
             <option value="">Select Grade</option>
@@ -207,13 +207,19 @@ const calculateGPA = () => {
             onChange={(e) => setSemester(e.target.value)}
             className="border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
-          <input
-            type="text"
-            placeholder="Level (e.g. 100L)"
-            value={level}
-            onChange={(e) => setLevel(e.target.value)}
-            className="border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-          />
+          <select
+  value={level}
+  onChange={(e) => setLevel(e.target.value)}
+  className="border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+>
+  <option value="">Select Level</option>
+  <option value="100">100</option>
+  <option value="200">200</option>
+  <option value="300">300</option>
+  <option value="400">400</option>
+  <option value="500">500</option>
+  <option value="600">600</option>
+</select>
         </div>
 
         <div className="flex justify-end">

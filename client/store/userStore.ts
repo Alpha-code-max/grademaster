@@ -15,49 +15,41 @@ interface AuthState {
   logout: () => void;
 }
 
-const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  token: null,
-  isAuthenticated: false,
+const useAuthStore = create<AuthState>((set) => {
+  const storedToken = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
+  const storedUser = typeof window !== "undefined" ? localStorage.getItem("user") : null;
 
-  initializeAuth: () => {
-    const storedToken = localStorage.getItem("authToken");
-    const storedUser = localStorage.getItem("user");
+  return {
+    user: storedUser ? JSON.parse(storedUser) : null,
+    token: storedToken || null,
+    isAuthenticated: !!storedToken && !!storedUser,
 
-    if (storedToken && storedUser) {
+    initializeAuth: () => {
+      if (typeof window === "undefined") return;
+
+      const token = localStorage.getItem("authToken");
+      const user = localStorage.getItem("user");
+
       set({
-        token: storedToken,
-        user: JSON.parse(storedUser),
-        isAuthenticated: true,
+        token: token || null,
+        user: user ? JSON.parse(user) : null,
+        isAuthenticated: !!token && !!user,
       });
-    } else {
-      set({
-        user: null,
-        token: null,
-        isAuthenticated: false,
-      });
-    }
-  },
+    },
 
-  login: (user, token) => {
-    localStorage.setItem("authToken", token);
-    localStorage.setItem("user", JSON.stringify(user));
-    set({
-      user,
-      token,
-      isAuthenticated: true,
-    });
-  },
+    login: (user, token) => {
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      set({ user, token, isAuthenticated: true });
+    },
 
-  logout: () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("user");
-    set({
-      user: null,
-      token: null,
-      isAuthenticated: false,
-    });
-  },
-}));
+    logout: () => {
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("user");
+      set({ user: null, token: null, isAuthenticated: false });
+    },
+  };
+});
+
 
 export default useAuthStore;

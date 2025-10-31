@@ -106,7 +106,7 @@ const ContactPage = () => {
 
       setStatus({
         type: 'success',
-        message: 'Message sent successfully! We\'ll get back to you soon.'
+        message: 'Message sent successfully! We&apos;ll get back to you soon.'
       });
 
       setFormData({ name: '', email: '', subject: '', message: '' });
@@ -139,7 +139,7 @@ const ContactPage = () => {
                 Get in Touch
               </h1>
               <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto">
-                Have questions, feedback, or need support? We're here to help make your experience better.
+                Have questions, feedback, or need support? We&apos;re here to help make your experience better.
               </p>
             </div>
 

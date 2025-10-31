@@ -1,7 +1,6 @@
 'use client'
 
 import NavBar from "@/components/NavBar";
-import Input from "@/components/Input";
 import Select from "@/components/Select";
 import Modal from "@/components/Modal";
 import Toast from "@/components/Toast";
