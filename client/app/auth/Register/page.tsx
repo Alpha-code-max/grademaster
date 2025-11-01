@@ -141,7 +141,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-white">
       <NavBar />
 
-      <div className="flex items-center justify-center p-4 sm:p-8 min-h-[calc(100vh-80px)]">
+      <div className="flex items-center justify-center mt-8 p-4 sm:p-8 min-h-[calc(100vh-80px)]">
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
